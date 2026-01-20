@@ -1,2 +1,2 @@
 float64 angle #radians
-time timestamp
+builtin_interfaces/Time timestamp

@@ -1,88 +1,84 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.8)
 project(mir_msgs)
 
-find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  message_generation
-)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(ament_cmake REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 
 ################################################
-## Declare ROS messages, services and actions ##
+## Declare ROS 2 messages, services, actions  ##
 ################################################
 
-# Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-    AngleMeasurment.msg
-    BMSData.msg
-    BatteryCurrents.msg
-    BrakeState.msg
-    ChargingState.msg
-    Device.msg
-    Devices.msg
-    EncoderTestEntry.msg
-    Encoders.msg
-    Error.msg
-    Event.msg
-    Events.msg
-    ExternalRobot.msg
-    ExternalRobots.msg
-    Gpio.msg
-    GripperState.msg
-    HeightState.msg
-    HookData.msg
-    HookExtendedStatus.msg
-    HookStatus.msg
-    IOs.msg
-    JoystickVel.msg
-    LocalMapStat.msg
-    MirExtra.msg
-    MirLocalPlannerPathTypes.msg
-    MissionCtrlCommand.msg
-    MissionCtrlState.msg
-    MovingState.msg
-    PalletLifterStatus.msg
-    Path.msg
-    Pendant.msg
-    PlanSegment.msg
-    PlanSegments.msg
-    Pose2D.msg
-    PowerBoardMotorStatus.msg
-    PrecisionDockingStatus.msg
-    Proximity.msg
-    ResourceState.msg
-    ResourcesAcquisition.msg
-    ResourcesState.msg
-    RobotMode.msg
-    RobotState.msg
-    RobotStatus.msg
-    SafetyStatus.msg
-    Serial.msg
-    ServiceResponseHeader.msg
-    SkidDetectionDiff.msg
-    SkidDetectionStampedFloat.msg
-    SoundEvent.msg
-    StampedEncoders.msg
-    TimeDebug.msg
-    Trolley.msg
-    Twist2D.msg
-    UserPrompt.msg
-    WebPath.msg
-    WorldMap.msg
-    WorldModel.msg
-)
-
-# Generate added messages and services with any dependencies listed here
-generate_messages(
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/AngleMeasurment.msg"
+  "msg/BMSData.msg"
+  "msg/BatteryCurrents.msg"
+  "msg/BrakeState.msg"
+  "msg/ChargingState.msg"
+  "msg/Device.msg"
+  "msg/Devices.msg"
+  "msg/EncoderTestEntry.msg"
+  "msg/Encoders.msg"
+  "msg/Error.msg"
+  "msg/Event.msg"
+  "msg/Events.msg"
+  "msg/ExternalRobot.msg"
+  "msg/ExternalRobots.msg"
+  "msg/Gpio.msg"
+  "msg/GripperState.msg"
+  "msg/HeightState.msg"
+  "msg/HookData.msg"
+  "msg/HookExtendedStatus.msg"
+  "msg/HookStatus.msg"
+  "msg/IOs.msg"
+  "msg/JoystickVel.msg"
+  "msg/LocalMapStat.msg"
+  "msg/MirExtra.msg"
+  "msg/MirLocalPlannerPathTypes.msg"
+  "msg/MissionCtrlCommand.msg"
+  "msg/MissionCtrlState.msg"
+  "msg/MovingState.msg"
+  "msg/PalletLifterStatus.msg"
+  "msg/Path.msg"
+  "msg/Pendant.msg"
+  "msg/PlanSegment.msg"
+  "msg/PlanSegments.msg"
+  "msg/Pose2D.msg"
+  "msg/PowerBoardMotorStatus.msg"
+  "msg/PrecisionDockingStatus.msg"
+  "msg/Proximity.msg"
+  "msg/ResourceState.msg"
+  "msg/ResourcesAcquisition.msg"
+  "msg/ResourcesState.msg"
+  "msg/RobotMode.msg"
+  "msg/RobotState.msg"
+  "msg/RobotStatus.msg"
+  "msg/SafetyStatus.msg"
+  "msg/Serial.msg"
+  "msg/ServiceResponseHeader.msg"
+  "msg/SkidDetectionDiff.msg"
+  "msg/SkidDetectionStampedFloat.msg"
+  "msg/SoundEvent.msg"
+  "msg/StampedEncoders.msg"
+  "msg/TimeDebug.msg"
+  "msg/Trolley.msg"
+  "msg/Twist2D.msg"
+  "msg/UserPrompt.msg"
+  "msg/WebPath.msg"
+  "msg/WorldMap.msg"
+  "msg/WorldModel.msg"
   DEPENDENCIES
+    builtin_interfaces
+    std_msgs
     geometry_msgs
 )
 
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  CATKIN_DEPENDS
-    geometry_msgs
-    message_runtime
-)
+ament_export_dependencies(rosidl_default_runtime)
+
+ament_package()

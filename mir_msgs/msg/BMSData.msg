@@ -33,7 +33,7 @@ int32 temperature
 uint32[] cell_voltage # In Mk2 robots and above the BMS provides data for 8 battery cells. 2Gen robots have BMS for 13 battery cells
 uint32 cell_voltage_diff
 
-string WST_serial
+string wst_serial
 
 # Exteded diagnosticts for BMZ battery
 uint32 bmz_flag # Flag for enabling extended diagnosticts
@@ -96,39 +96,39 @@ uint32 fet_disable_state
 float64 last_battery_msg_time
 
 # SBS battery states
-uint32 SBS_battery_status
-uint32 SBS_battery_status_raw
-uint32 SBS_InitState1=1
-uint32 SBS_InitState2=2
-uint32 SBS_InitState3=3
-uint32 SBS_InitState4=4
-uint32 SBS_Idle=5
-uint32 SBS_Discharge=6
-uint32 SBS_Charge=7
-uint32 SBS_Fault=10
-uint32 SBS_CriticalError=11
-uint32 SBS_PrepareDeepsleep=99
-uint32 SBS_Deepsleep=100
+uint32 sbs_battery_status
+uint32 sbs_battery_status_raw
+uint32 SBS_INIT_STATE_1=1
+uint32 SBS_INIT_STATE_2=2
+uint32 SBS_INIT_STATE_3=3
+uint32 SBS_INIT_STATE_4=4
+uint32 SBS_IDLE=5
+uint32 SBS_DISCHARGE=6
+uint32 SBS_CHARGE=7
+uint32 SBS_FAULT=10
+uint32 SBS_CRITICAL_ERROR=11
+uint32 SBS_PREPARE_DEEPSLEEP=99
+uint32 SBS_DEEPSLEEP=100
 
-string SBS_serial_1
-string SBS_serial_2
+string sbs_serial_1
+string sbs_serial_2
 
-uint32 SBS_arti_nr_1
-uint32 SBS_arti_nr_2
-uint32 SBS_arti_nr_3
+uint32 sbs_arti_nr_1
+uint32 sbs_arti_nr_2
+uint32 sbs_arti_nr_3
 
-uint32 SBS_curr_flow_passive_state
+uint32 sbs_curr_flow_passive_state
 
 # Overcurrent counters
-uint8 CHG_OC1_Count
-uint8 CHG_OC2_Count
-uint8 DSG_OC1_Count
-uint8 DSG_OC2_Count
-uint8 DSG_OC3_Count
-uint8 AFE_OC1_Count
-uint8 AFE_OC2_Count
-uint8 CHG_LatchClear_Count
-uint8 DSG_LatchClear_Count
+uint8 chg_oc1_count
+uint8 chg_oc2_count
+uint8 dsg_oc1_count
+uint8 dsg_oc2_count
+uint8 dsg_oc3_count
+uint8 afe_oc1_count
+uint8 afe_oc2_count
+uint8 chg_latch_clear_count
+uint8 dsg_latch_clear_count
 
 uint8 chg_oc_warning
 uint8 dsg_oc_warning

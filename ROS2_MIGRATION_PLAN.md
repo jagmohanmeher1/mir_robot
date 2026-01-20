@@ -62,17 +62,17 @@ At each stage:
 **Goal**: Provide all MiR message definitions as a ROS2 interface package using `ament_cmake` + `rosidl`.
 
 **Tasks**
-- [ ] Convert `package.xml` to **format 3** with `ament_cmake` and `rosidl_default_generators`.
-- [ ] Replace ROS1 dependencies:
-  - [ ] `message_generation` → `rosidl_default_generators`
-  - [ ] `message_runtime` → `rosidl_default_runtime`
-- [ ] Rewrite `CMakeLists.txt`:
-  - [ ] Use `find_package(ament_cmake REQUIRED)` and `find_package(rosidl_default_generators REQUIRED)`.
-  - [ ] Use `rosidl_generate_interfaces()` for `.msg` / `.srv` / `.action`.
-  - [ ] Add `ament_export_dependencies(rosidl_default_runtime)`.
-  - [ ] Call `ament_package()` at the end.
-- [ ] Verify that generated interfaces appear:
-  - [ ] `colcon build --packages-select mir_msgs`
+- [x] Convert `package.xml` to **format 3** with `ament_cmake` and `rosidl_default_generators`.
+- [x] Replace ROS1 dependencies:
+  - [x] `message_generation` → `rosidl_default_generators`
+  - [x] `message_runtime` → `rosidl_default_runtime`
+- [x] Rewrite `CMakeLists.txt`:
+  - [x] Use `find_package(ament_cmake REQUIRED)` and `find_package(rosidl_default_generators REQUIRED)`.
+  - [x] Use `rosidl_generate_interfaces()` for `.msg` / `.srv` / `.action`.
+  - [x] Add `ament_export_dependencies(rosidl_default_runtime)`.
+  - [x] Call `ament_package()` at the end.
+- [x] Verify that generated interfaces appear:
+  - [x] `colcon build --packages-select mir_msgs`
   - [ ] `source install/setup.bash`
   - [ ] `ros2 interface list | grep mir`
 
@@ -238,6 +238,13 @@ We will update this log with **each commit** touching the migration.
   - Forked `mir_robot` into `/home/jag/ws_mir/src/mir_robot`.
   - Created `ros2-jazzy-migration` branch.
   - Wrote initial migration strategy and package checklists.
+
+- **[2026-01-20]**: Migrated `mir_msgs` to ROS2 Jazzy.
+  - Converted `package.xml` to format 3 with `ament_cmake` + `rosidl_default_generators`.
+  - Replaced ROS1 message generation/runtime dependencies with `rosidl_default_*`.
+  - Replaced catkin-based `CMakeLists.txt` with `rosidl_generate_interfaces(...)` + `ament_package()`.
+  - Updated message definitions to ROS2 naming/type rules (fully-qualified `std_msgs/Header`, `builtin_interfaces/Time`, `builtin_interfaces/Duration`, lower_snake_case fields).
+  - Verified `colcon build --packages-select mir_msgs` succeeds on ROS2 Jazzy.
 
 _(Add new entries below as work progresses.)_
 

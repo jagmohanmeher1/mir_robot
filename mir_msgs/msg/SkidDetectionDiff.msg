@@ -1,4 +1,4 @@
-time time_stamp
+builtin_interfaces/Time time_stamp
 float64 enc_acc_x
 float64 enc_acc_y
 float64 enc_rot_th

@@ -1,4 +1,4 @@
-Header header
+std_msgs/Header header
 float32 battery_percentage
 int32 battery_time_remaining
 float32 battery_voltage

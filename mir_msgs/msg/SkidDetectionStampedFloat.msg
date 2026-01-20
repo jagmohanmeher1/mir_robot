@@ -1,2 +1,2 @@
-time time_stamp
+builtin_interfaces/Time time_stamp
 float64 value
