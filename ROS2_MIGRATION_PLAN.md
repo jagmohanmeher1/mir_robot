@@ -86,11 +86,11 @@ At each stage:
 **Goal**: Port MiR action definitions (move base, etc.) to ROS2 action interfaces.
 
 **Tasks**
-- [ ] Convert `package.xml` to format 3 with `ament_cmake` + `rosidl_default_generators`.
-- [ ] Update `CMakeLists.txt` with `rosidl_generate_interfaces()` for `.action` files.
-- [ ] Ensure dependencies (e.g. `action_msgs`, `builtin_interfaces`) are declared.
-- [ ] Build and verify:
-  - [ ] `colcon build --packages-select mir_actions`
+- [x] Convert `package.xml` to format 3 with `ament_cmake` + `rosidl_default_generators`.
+- [x] Update `CMakeLists.txt` with `rosidl_generate_interfaces()` for `.action` files.
+- [x] Ensure dependencies (e.g. `builtin_interfaces`, `geometry_msgs`, `nav_msgs`, `mir_msgs`) are declared.
+- [x] Build and verify:
+  - [x] `colcon build --packages-select mir_actions`
   - [ ] `ros2 interface list | grep mir`
 
 **Notes**
@@ -245,6 +245,12 @@ We will update this log with **each commit** touching the migration.
   - Replaced catkin-based `CMakeLists.txt` with `rosidl_generate_interfaces(...)` + `ament_package()`.
   - Updated message definitions to ROS2 naming/type rules (fully-qualified `std_msgs/Header`, `builtin_interfaces/Time`, `builtin_interfaces/Duration`, lower_snake_case fields).
   - Verified `colcon build --packages-select mir_msgs` succeeds on ROS2 Jazzy.
+
+- **[2026-01-20]**: Migrated `mir_actions` to ROS2 Jazzy.
+  - Converted `package.xml` to format 3 with `ament_cmake` + `rosidl_default_generators`.
+  - Replaced catkin-based `CMakeLists.txt` with `rosidl_generate_interfaces(action/MirMoveBase.action, ...)` + `ament_package()`.
+  - Declared ROS2 dependencies on `geometry_msgs`, `mir_msgs`, `nav_msgs`, and `builtin_interfaces`.
+  - Verified `colcon build --packages-select mir_actions` succeeds on ROS2 Jazzy.
 
 _(Add new entries below as work progresses.)_
 
