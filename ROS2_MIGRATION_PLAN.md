@@ -103,14 +103,14 @@ At each stage:
 **Goal**: Make all MiR URDF/Xacro/meshes available in a ROS2-friendly description package.
 
 **Tasks**
-- [ ] Convert `package.xml` to format 3 with `ament_cmake`.
-- [ ] Update `CMakeLists.txt`:
-  - [ ] Install `urdf`, `xacro`, `meshes`, `config` directories using `install(DIRECTORY ...)`.
-  - [ ] Add `ament_package()`.
-- [ ] Add/convert a minimal ROS2 launch file for visualization:
-  - [ ] `mir_display.launch.py` (robot_state_publisher + joint_state_publisher + RViz).
-- [ ] Test:
-  - [ ] `colcon build --packages-select mir_description`
+- [x] Convert `package.xml` to format 3 with `ament_cmake`.
+- [x] Update `CMakeLists.txt`:
+  - [x] Install `urdf`, `xacro`, `meshes`, `config` directories using `install(DIRECTORY ...)`.
+  - [x] Add `ament_package()`.
+- [x] Add/convert a minimal ROS2 launch file for visualization:
+  - [x] `mir_display.launch.py` (robot_state_publisher + joint_state_publisher + RViz).
+- [x] Test:
+  - [x] `colcon build --packages-select mir_description`
   - [ ] `ros2 launch mir_description mir_display.launch.py`
 
 **Notes**
@@ -251,6 +251,11 @@ We will update this log with **each commit** touching the migration.
   - Replaced catkin-based `CMakeLists.txt` with `rosidl_generate_interfaces(action/MirMoveBase.action, ...)` + `ament_package()`.
   - Declared ROS2 dependencies on `geometry_msgs`, `mir_msgs`, `nav_msgs`, and `builtin_interfaces`.
   - Verified `colcon build --packages-select mir_actions` succeeds on ROS2 Jazzy.
+
+- **[2026-01-20]**: Migrated `mir_description` to ROS2 Jazzy (build-only).
+  - Converted `package.xml` from catkin format 2 to format 3 with `ament_cmake`.
+  - Replaced catkin-based `CMakeLists.txt` with ament version installing `config`, `launch`, `meshes`, `rviz`, and `urdf` into `share/${PROJECT_NAME}`.
+  - Verified `colcon build --packages-select mir_description` succeeds on ROS2 Jazzy.
 
 _(Add new entries below as work progresses.)_
 

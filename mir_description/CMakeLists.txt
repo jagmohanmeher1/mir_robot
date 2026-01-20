@@ -1,31 +1,24 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.8)
 project(mir_description)
 
-find_package(catkin REQUIRED COMPONENTS
-  roslaunch
-)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package()
+find_package(ament_cmake REQUIRED)
 
 #############
 ## Install ##
 #############
 
-# Mark other files for installation (e.g. launch and bag files, etc.)
-install(DIRECTORY
-  config
-  launch
-  meshes
-  rviz
-  urdf
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+install(
+  DIRECTORY
+    config
+    launch
+    meshes
+    rviz
+    urdf
+  DESTINATION share/${PROJECT_NAME}
 )
 
-#############
-## Testing ##
-#############
-
-roslaunch_add_file_check(launch)
+ament_package()
