@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # Copyright (c) 2018-2022, Martin Günther (DFKI GmbH) and contributors
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,47 +29,59 @@
 #
 # Author: Martin Günther
 
-import rospy
+import rclpy
+from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 
-pub = None
+
+class Rep117Filter(Node):
+    """Convert LaserScan ranges to REP-117 semantics."""
+
+    def __init__(self):
+        super().__init__('rep117_filter')
+
+        self.publisher_ = self.create_publisher(LaserScan, 'scan_filtered', 10)
+        self.subscription = self.create_subscription(
+            LaserScan,
+            'scan',
+            self.callback,
+            10,
+        )
+
+    def callback(self, msg: LaserScan):
+        ranges_out = []
+        for dist in msg.ranges:
+            if dist < msg.range_min:
+                ranges_out.append(float('-inf'))
+            elif dist > msg.range_max:
+                ranges_out.append(float('inf'))
+            else:
+                ranges_out.append(dist)
+
+        msg.ranges = ranges_out
+        self.publisher_.publish(msg)
 
 
-def callback(msg):
-    """
-    Convert laser scans to REP 117 standard.
-
-    See http://www.ros.org/reps/rep-0117.html
-    """
-    ranges_out = []
-    for dist in msg.ranges:
-        if dist < msg.range_min:
-            # assume "reading too close to measure",
-            # although it could also be "reading invalid" (nan)
-            ranges_out.append(float("-inf"))
-
-        elif dist > msg.range_max:
-            # assume "reading of no return (outside sensor range)",
-            # although it could also be "reading invalid" (nan)
-            ranges_out.append(float("inf"))
-        else:
-            ranges_out.append(dist)
-
-    msg.ranges = ranges_out
-    pub.publish(msg)
-
-
-def main():
-    global pub
-    rospy.init_node('rep117_filter')
-
-    pub = rospy.Publisher('scan_filtered', LaserScan, queue_size=10)
-    rospy.Subscriber('scan', LaserScan, callback)
-    rospy.spin()
+def main(args=None):
+    rclpy.init(args=args)
+    node = Rep117Filter()
+    try:
+        rclpy.spin(node)
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException:
-        pass
+    main()
+
+{
+  "cells": [],
+  "metadata": {
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 2
+}

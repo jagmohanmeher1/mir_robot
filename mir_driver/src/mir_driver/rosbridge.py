@@ -174,16 +174,19 @@ class RosbridgeSetup:
 class RosbridgeWSConnection:
     def __init__(self, host, port):
         self.ws = websocket.WebSocketApp(
-            ("ws://%s:%d/" % (host, port)), on_message=self.on_message, on_error=self.on_error, on_close=self.on_close
+            ("ws://%s:%d/" % (host, port)),
+            on_message=self.on_message,
+            on_error=self.on_error,
+            on_close=self.on_close,
+            on_open=self.on_open,
         )
-        self.ws.on_open = self.on_open
         self.run_thread = threading.Thread(target=self.run)
         self.run_thread.start()
         self.connected = False
         self.errored = False
         self.callbacks = []
 
-    def on_open(self):
+    def on_open(self, _ws):
         print("### ROS bridge connected ###")
         self.connected = True
 
@@ -194,18 +197,18 @@ class RosbridgeWSConnection:
         else:
             self.ws.send(message)
 
-    def on_error(self, error):
+    def on_error(self, _ws, error):
         self.errored = True
         print("Error: %s" % error)
 
-    def on_close(self):
+    def on_close(self, _ws, close_status_code=None, close_reason=None):
         self.connected = False
         print("### ROS bridge closed ###")
 
     def run(self, *args):
         self.ws.run_forever()
 
-    def on_message(self, message):
+    def on_message(self, _ws, message):
         # Call the handlers
         for callback in self.callbacks:
             callback(message)

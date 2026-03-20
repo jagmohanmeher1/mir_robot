@@ -1,73 +1,37 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.8)
 project(mir_driver)
 
-find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
-  diagnostic_msgs
-  dynamic_reconfigure
-  geometry_msgs
-  mir_actions
-  mir_msgs
-  move_base_msgs
-  nav_msgs
-  rosgraph_msgs
-  roslaunch
-  rospy
-  rospy_message_converter
-  sdc21x0
-  sensor_msgs
-  std_msgs
-  tf
-  tf2_msgs
-  visualization_msgs
-)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-catkin_python_setup()
-
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-  CATKIN_DEPENDS
-    actionlib
-    actionlib_msgs
-    diagnostic_msgs
-    dynamic_reconfigure
-    geometry_msgs
-    mir_actions
-    mir_msgs
-    move_base_msgs
-    nav_msgs
-    rosgraph_msgs
-    rospy_message_converter
-    sdc21x0
-    sensor_msgs
-    std_msgs
-    tf
-    tf2_msgs
-    visualization_msgs
-)
+find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 
 #############
 ## Install ##
 #############
 
-catkin_install_python(PROGRAMS
-  nodes/fake_mir_joint_publisher.py
-  nodes/mir_bridge.py
-  nodes/rep117_filter.py
-  nodes/tf_remove_child_frames.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-# Mark other files for installation (e.g. launch and bag files, etc.)
-install(DIRECTORY
-  launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# Install Python nodes (ROS2 ported)
+install(
+  PROGRAMS
+    nodes/fake_mir_joint_publisher.py
+    nodes/mir_bridge_ros2.py
+    nodes/mock_mir_rosbridge_server.py
+    nodes/rep117_filter.py
+    nodes/tf_remove_child_frames.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
-#############
-## Testing ##
-#############
+# Install launch files
+install(
+  DIRECTORY
+    launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
-roslaunch_add_file_check(launch)
+# Install Python module (src/mir_driver) so imports like
+# `from mir_driver import rosbridge` work at runtime.
+ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR src/${PROJECT_NAME})
+
+ament_package()

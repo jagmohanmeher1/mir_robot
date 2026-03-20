@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2016 The Cartographer Authors
 # Copyright 2018 DFKI GmbH
 #
@@ -16,36 +15,82 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import rospy
-from tf.msg import tfMessage
+import rclpy
+from rclpy.node import Node
+from tf2_msgs.msg import TFMessage
 
 
-def main():
-    rospy.init_node('tf_remove_child_frames')
-    remove_frames = rospy.get_param('~remove_frames', [])
+class TfRemoveChildFrames(Node):
+    def __init__(self):
+        super().__init__('tf_remove_child_frames')
 
-    # filter tf_in topic
-    tf_pub = rospy.Publisher('tf_out', tfMessage, queue_size=1)
+        self.declare_parameter('remove_frames', [])
+        param_value = self.get_parameter('remove_frames').get_parameter_value()
+        if param_value.type == param_value.TYPE_STRING_ARRAY:
+            self.remove_frames = list(param_value.string_array_value)
+        else:
+            self.remove_frames = []
 
-    def tf_cb(msg):
-        msg.transforms = [t for t in msg.transforms if t.child_frame_id.lstrip('/') not in remove_frames]
-        if len(msg.transforms) > 0:
-            tf_pub.publish(msg)
+        # filter tf_in topic
+        self.tf_pub = self.create_publisher(TFMessage, 'tf_out', 10)
+        self.tf_sub = self.create_subscription(
+            TFMessage,
+            'tf_in',
+            self.tf_cb,
+            10,
+        )
 
-    rospy.Subscriber('tf_in', tfMessage, tf_cb)
+        # filter tf_static_in topic
+        self.tf_static_pub = self.create_publisher(TFMessage, 'tf_static_out', 10)
+        self.tf_static_sub = self.create_subscription(
+            TFMessage,
+            'tf_static_in',
+            self.tf_static_cb,
+            10,
+        )
 
-    # filter tf_static_in topic
-    tf_static_pub = rospy.Publisher('tf_static_out', tfMessage, queue_size=1, latch=True)
+    def _filter_msg(self, msg: TFMessage):
+        filtered = TFMessage()
+        filtered.transforms = [
+            t
+            for t in msg.transforms
+            if t.child_frame_id.lstrip('/') not in self.remove_frames
+        ]
+        if not filtered.transforms:
+            return None
+        return filtered
 
-    def tf_static_cb(msg):
-        msg.transforms = [t for t in msg.transforms if t.child_frame_id.lstrip('/') not in remove_frames]
-        if len(msg.transforms) > 0:
-            tf_static_pub.publish(msg)
+    def tf_cb(self, msg: TFMessage):
+        filtered = self._filter_msg(msg)
+        if filtered is not None:
+            self.tf_pub.publish(filtered)
 
-    rospy.Subscriber('tf_static_in', tfMessage, tf_static_cb)
+    def tf_static_cb(self, msg: TFMessage):
+        filtered = self._filter_msg(msg)
+        if filtered is not None:
+            self.tf_static_pub.publish(filtered)
 
-    rospy.spin()
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = TfRemoveChildFrames()
+    try:
+        rclpy.spin(node)
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':
     main()
+
+{
+  "cells": [],
+  "metadata": {
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 2
+}

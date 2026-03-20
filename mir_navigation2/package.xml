@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>mir_navigation2</name>
+  <version>2.0.0</version>
+  <description>Nav2 configuration and launch files for MiR robot (ROS2 Jazzy)</description>
+  <maintainer email="your@email.com">Your Name</maintainer>
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Nav2 dependencies (from source) -->
+  <depend>nav2_bringup</depend>
+  <depend>nav2_common</depend>
+  <depend>nav2_msgs</depend>
+  <depend>nav2_controller</depend>
+  <depend>nav2_core</depend>
+  <depend>nav2_costmap_2d</depend>
+  <depend>nav2_planner</depend>
+  <depend>nav2_recoveries</depend>
+  <depend>nav2_util</depend>
+  <depend>nav2_voxel_grid</depend>
+  <depend>nav2_bt_navigator</depend>
+  <depend>nav2_waypoint_follower</depend>
+  <depend>nav2_lifecycle_manager</depend>
+  <depend>nav2_map_server</depend>
+  <depend>nav2_amcl</depend>
+  
+  <!-- DWB Controller (local planner) -->
+  <depend>nav2_dwb_controller</depend>
+  
+  <!-- Planner -->
+  <depend>nav2_navfn_planner</depend>
+  
+  <!-- MiR dependencies -->
+  <depend>mir_description</depend>
+  <depend>mir_driver</depend>
+  
+  <!-- ROS2 core -->
+  <depend>rclpy</depend>
+  <depend>tf2_ros</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
